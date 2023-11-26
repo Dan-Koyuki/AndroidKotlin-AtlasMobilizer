@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rounded_frame_text"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/help_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/help_account"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="16dp"/>
+
+        <TextView
+            android:id="@+id/help_account_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/LoginInfo"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/help_account"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/help_about_me"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/help_about_me"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/help_account_desc"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:drawableStartCompat="@drawable/person_icon"
+            android:drawablePadding="10dp"/>
+
+        <TextView
+            android:id="@+id/help_about_me_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_me"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/help_about_me"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/help_my_journey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/help_journey"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/help_about_me_desc"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:drawableStartCompat="@drawable/journey_icon"
+            android:drawablePadding="10dp"/>
+
+        <TextView
+            android:id="@+id/help_my_journey_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/my_journey"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/help_my_journey"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/help_what_expected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/help_expected"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/help_my_journey_desc"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:drawableStartCompat="@drawable/expect_icon"
+            android:drawablePadding="10dp"/>
+
+        <TextView
+            android:id="@+id/help_what_expected_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/expected"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/help_what_expected"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/help_connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/help_connect"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/help_what_expected_desc"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:drawableStartCompat="@drawable/connect_icon"
+            android:drawablePadding="10dp"/>
+
+        <TextView
+            android:id="@+id/help_connect_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/connect_desc"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/help_connect"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/help_email_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/emaillabel2"
+            app:layout_constraintTop_toBottomOf="@id/help_connect_desc"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/help_discord_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/discordlabel"
+            app:layout_constraintTop_toBottomOf="@id/help_email_contact"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/help_WhatsApp_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/whatsapplabel"
+            app:layout_constraintTop_toBottomOf="@id/help_discord_contact"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/email_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/emailcontact"
+            app:layout_constraintTop_toBottomOf="@id/help_connect_desc"
+            app:layout_constraintLeft_toRightOf="@id/help_email_contact"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="18sp"
+            android:textColor="@color/clickable"
+            android:autoLink="email"/>
+
+        <TextView
+            android:id="@+id/discord_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/discordcontact"
+            app:layout_constraintTop_toBottomOf="@id/help_email_contact"
+            app:layout_constraintLeft_toRightOf="@id/help_discord_contact"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="20sp"
+            android:textColor="@color/clickable"/>
+
+        <TextView
+            android:id="@+id/WhatsApp_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/whatsappcontact"
+            app:layout_constraintTop_toBottomOf="@id/help_discord_contact"
+            app:layout_constraintLeft_toRightOf="@id/help_WhatsApp_contact"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="16dp"
+            android:textSize="20sp"
+            android:textColor="@color/clickable" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

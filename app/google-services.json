@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "30407764678",
+    "project_id": "atlasmobilizer",
+    "storage_bucket": "atlasmobilizer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30407764678:android:495729c17c80f7992f85c7",
+        "android_client_info": {
+          "package_name": "com.assignment.mondrodb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXVMAetmeg0m8ZcD0P9NTZQRzSpXl7IMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

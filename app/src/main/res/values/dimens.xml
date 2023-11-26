@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="logo_scale">210dp</dimen>
+    <dimen name="logo_marginT">45dp</dimen>
+    <dimen name="btn_scale_w">130dp</dimen>
+    <dimen name="btn_scale_h">70dp</dimen>
+    <dimen name="btn_scale_w2">110dp</dimen>
+    <dimen name="btn_scale_h2">60dp</dimen>
+    <dimen name="uin_scale_w">250dp</dimen>
+    <dimen name="uin_scale_h">550dp</dimen>
+</resources>

@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Atlas Mobilizer</string>
+    <string name="letLogin">Let\'s Start!</string>
+    <string name="emailhint">example@google.com</string>
+    <string name="mongo_promotion">Embrace MongoDB for lightning-fast and scalable data storage.</string>
+    <string name="emaillabel">Email</string>
+    <string name="passwordlabel">Password</string>
+    <string name="passwordhint">password</string>
+    <string name="create">New User? Create Account Here!</string>
+    <string name="loginlabel">Login</string>
+    <string name="signuplabel">Sign Up</string>
+    <string name="LoginInfo">*) Use Email and Password to Login\n*) Click Sign Up if you dont have an account.\n*) Forget Password feature still in development. So, please remember your password upon register</string>
+    <string name="help_account">Account</string>
+    <string name="help_about_me">About Me</string>
+    <string name="about_me">Hello there! I\'m Irwanto Danang Bahtiar, currently pursuing my degree in Informatic. This app is the result of my dedication and skills developed throughout my Mobile Application Development course.</string>
+    <string name="help_journey">My Journey</string>
+    <string name="my_journey">As a student, I\'ve delved into various aspects of app development. Atlas Mobilizer is not just an app; it\'s a testament to my commitment to making database management more accessible, especially when it comes to MongoDB.</string>
+    <string name="help_expected">What to Expect</string>
+    <string name="expected">Atlas Mobilizer simplifies the complexities of database management, putting the power of MongoDB in the palm of your hand. Seamlessly interact with your databases, perform CRUD operations, and streamline your workflow—all from your smartphone. Ensuring that you stay connected and in control, no matter where you are.\nPlease note that this application is for learning purpose.</string>
+    <string name="help_connect">Connect with Me</string>
+    <string name="connect_desc">I\'d love to hear your thoughts, feedback, or just have a chat about database management or mobile development.\nFeel free to reach out to me through:</string>
+    <string name="emaillabel2">Email    :</string>
+    <string name="discordlabel">Discord:</string>
+    <string name="whatsapplabel">WhatsApp:</string>
+    <string name="emailcontact">dankoyuki398@gmail.com</string>
+    <string name="discordcontact">Dan Koyuki\'s server</string>
+    <string name="whatsappcontact">Irwanto Danang</string>
+    <string name="connectivityLabel">Connection Setting</string>
+    <string name="username">MongoDB Cluster</string>
+    <string name="usernameHint">Cluster (doesn\'t need to be same with the actual cluster) </string>
+    <string name="connectionString">MongoDB Atlas Connection String</string>
+    <string name="connectionHint"><![CDATA[mongodb+srv://<username>:<password>@<cluster>.6glxej6.mongodb.net/?retryWrites=true&w=majority]]></string>
+    <string name="help_cluster">Cluster</string>
+    <string name="cluster_desc">*) If you dont have MongoDB Cluster, you can go to:</string>
+    <string name="MongoDB">MongoDB</string>
+    <string name="mongo_tutor">It will lead you to create a MongoDB account, please follow it throughtly.</string>
+    <string name="help_connectionString">Connection String</string>
+    <string name="connectionStringDesc"><![CDATA[A unique String you can get after creating the Cluster.\nTo get the Connection Sting, from your cluster dashboard:\n*) Click Connect\n*) Select Drivers\n*) Select Node.js\n*) Copy the Connection String\n\nMake sure to change necessary parameter with its actual value.\nFor example, <username> with username, <password> with password and such]]></string>
+    <string name="help_cant_connect">Can\'t Connect?</string>
+    <string name="service">1. Validate the presence User with the Username and Password within the Connection String by accessing the Database Access Tab.\n2. If the issue persists, navigate to the Network Access Tab and consider adding your specific IP address. Alternatively, as a temporary measure, the broad IP range \"0.0.0.0/0\" can be added as an option for troubleshooting purposes. However, it\'s essential to note that this option is not recommended for extended periods due to its inherent security risks, as it opens the cluster to connections from any network.</string>
+    <string name="databaseName">Database Name</string>
+    <string name="CollectionName">Collection Name</string>
+    <string name="getDatabaseList">https://mongo-db-api-coral.vercel.app/getDatabases</string>
+    <string name="DocumentOverview">Overview</string>
+    <string name="DocumentCreation">Create</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

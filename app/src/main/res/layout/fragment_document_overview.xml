@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".myFragment.DocumentOverviewFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:id="@+id/llCollectionName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_border_text"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/tvCollectionName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Collection"
+                android:textSize="24sp"
+                android:textStyle="italic"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:drawablePadding="15dp"
+                app:drawableStartCompat="@drawable/collection_icon" />
+
+            <ImageView
+                android:id="@+id/ivBtnDisconnect"
+                android:layout_width="@dimen/btn_scale_w2"
+                android:layout_height="@dimen/btn_scale_h2"
+                android:src="@drawable/btn_disconnect"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="disconnectbtn" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/DocumentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/llCollectionName"
+            android:background="@drawable/rounded_border_text"
+            android:layout_margin="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Document"
+                android:textSize="24sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/ivHelpDocument"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/help2_icon"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="4dp"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/ivDocumentRefreshButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/refresh_icon"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="16dp" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/DocumentList"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:background="@drawable/rounded_border_text"
+            android:padding="10dp"
+            android:foregroundGravity="top"
+            android:layout_margin="8dp" >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvDocumentList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/api_item_model" />
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
