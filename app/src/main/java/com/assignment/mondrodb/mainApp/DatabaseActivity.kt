@@ -13,6 +13,7 @@ import com.assignment.mondrodb.R
 import com.assignment.mondrodb.myAdapter.APIAdapter
 import com.assignment.mondrodb.myModel.APIModel
 import com.assignment.mondrodb.myModel.APIResponse
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +29,8 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
         val clusterName = findViewById<TextView>(R.id.tvClusterName)
         clusterName.text = intent.getStringExtra("Cluster")
 
+        vAuth = FirebaseAuth.getInstance()
+
         requestQueue = Volley.newRequestQueue(this)
         vView = findViewById(R.id.rvDatabaseList)
         vList = ArrayList()
@@ -41,6 +44,11 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
         getDatabaseList()
 
         btnHandler()
+    }
+
+    private fun getUserId(): String {
+        val currentUser = vAuth.currentUser
+        return currentUser?.uid.toString()
     }
 
     override fun onClick(pDBName: String) {
@@ -100,11 +108,14 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
 
     private fun getDatabaseList(){
         coroutineScope.launch {
-            val apiUrl = getString(R.string.getDatabaseList)
+            val apiUrl = "https://mongo-db-api-coral.vercel.app/db"
+
+            val jsonObject = JSONObject()
+            jsonObject.put("userId", getUserId())
 
             try {
                 val response = withContext(Dispatchers.IO) {
-                    makeApiCall(apiUrl)
+                    makeApiCallWithContext(apiUrl, jsonObject)
                 }
 
                 Log.d("APIError", response)
@@ -134,10 +145,11 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
 
     private fun create(pDBName: String){
         coroutineScope.launch {
-            val apiUrl = "https://mongo-db-api-coral.vercel.app/createDatabase"
+            val apiUrl = "https://mongo-db-api-coral.vercel.app/db/create"
 
             val jsonObject = JSONObject()
             jsonObject.put("vDBName", pDBName)
+            jsonObject.put("userId", getUserId())
             Log.d("APIError", jsonObject.toString())
 
             try {
@@ -162,10 +174,11 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
 
     private fun remove(pDBName: String){
         coroutineScope.launch {
-            val apiUrl = "https://mongo-db-api-coral.vercel.app/removeDatabase"
+            val apiUrl = "https://mongo-db-api-coral.vercel.app/db/remove"
 
             val jsonObject = JSONObject()
             jsonObject.put("vDBName", pDBName)
+            jsonObject.put("userId", getUserId())
             Log.d("APIError", jsonObject.toString())
 
             try {
@@ -190,10 +203,11 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
 
     private fun select(pDBName: String){
         coroutineScope.launch {
-            val apiUrl = "https://mongo-db-api-coral.vercel.app/selectDatabase"
+            val apiUrl = "https://mongo-db-api-coral.vercel.app/db/select"
 
             val jsonObject = JSONObject()
             jsonObject.put("vDBName", pDBName)
+            jsonObject.put("userId", getUserId())
             Log.d("APIError", jsonObject.toString())
 
             try {

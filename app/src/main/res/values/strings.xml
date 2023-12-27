@@ -40,7 +40,6 @@
     <string name="service">1. Validate the presence User with the Username and Password within the Connection String by accessing the Database Access Tab.\n2. If the issue persists, navigate to the Network Access Tab and consider adding your specific IP address. Alternatively, as a temporary measure, the broad IP range \"0.0.0.0/0\" can be added as an option for troubleshooting purposes. However, it\'s essential to note that this option is not recommended for extended periods due to its inherent security risks, as it opens the cluster to connections from any network.</string>
     <string name="databaseName">Database Name</string>
     <string name="CollectionName">Collection Name</string>
-    <string name="getDatabaseList">https://mongo-db-api-coral.vercel.app/getDatabases</string>
     <string name="DocumentOverview">Overview</string>
     <string name="DocumentCreation">Create</string>
     <!-- TODO: Remove or change this placeholder text -->

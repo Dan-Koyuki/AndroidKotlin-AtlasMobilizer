@@ -9,6 +9,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.assignment.mondrodb.myAdapter.APIAdapter
 import com.assignment.mondrodb.myModel.APIModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -30,14 +31,22 @@ open class DashboardSettings : AppCompatActivity() {
     protected lateinit var vList : ArrayList<APIModel>
     protected lateinit var vView : RecyclerView
     protected lateinit var vAdapter : APIAdapter
+    protected lateinit var vAuth : FirebaseAuth
 
     protected fun disconnect(){
         coroutineScope.launch {
-            val apiUrl = "https://mongo-db-api-coral.vercel.app/disconnectFromMongoDB"
+            val apiUrl = "https://mongo-db-api-coral.vercel.app/mongoDB/disconnect"
+
+            vAuth = FirebaseAuth.getInstance()
+            val currentUser = vAuth.currentUser
+            val userId = currentUser?.uid
+
+            val jsonObject = JSONObject()
+            jsonObject.put("userId", userId)
 
             try {
                 val response = withContext(Dispatchers.IO) {
-                    makeApiCall(apiUrl)
+                    makeApiCallWithContext(apiUrl, jsonObject)
                 }
                 // Handle response
                 if (!response.contains("Disconnected From Atlas")) {
@@ -46,24 +55,6 @@ open class DashboardSettings : AppCompatActivity() {
             } catch (e: Exception) {
                 // Handle error
                 Log.d("APIError", "Error: $e")
-            }
-        }
-    }
-
-    protected suspend fun makeApiCall(apiUrl: String): String {
-        return suspendCancellableCoroutine { continuation ->
-            val request = StringRequest(
-                Request.Method.POST, apiUrl,
-                { response ->
-                    continuation.resume(response)
-                },
-                { error ->
-                    continuation.resumeWithException(error)
-                })
-
-            requestQueue.add(request)
-            continuation.invokeOnCancellation {
-                requestQueue.cancelAll(TAG) // Cancel the request if coroutine is cancelled
             }
         }
     }

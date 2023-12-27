@@ -18,7 +18,6 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.assignment.mondrodb.BaseActivity
 import com.assignment.mondrodb.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -66,11 +65,12 @@ class ConnectionActivity : AppCompatActivity() {
         val clusterName : EditText = findViewById(R.id.etMongoCluster)
         val connectBtn : ImageView = findViewById(R.id.ivConnectBtn)
         connectBtn.setOnClickListener {
+            val userId = auth.currentUser?.uid
             val uri = connectionString.text.toString()
             val cluster = clusterName.text.toString()
             Log.d("APIError", uri)
             try {
-                connectToMongo(uri)
+                connectToMongo(uri, userId)
             } catch (e: Exception) {
                 Toast.makeText(this@ConnectionActivity, "Error: $e", Toast.LENGTH_SHORT).show()
             }
@@ -88,13 +88,14 @@ class ConnectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun connectToMongo(uri: String) {
+    private fun connectToMongo(uri: String, userId: String?) {
         coroutineScope.launch {
-            val apiUrl = "https://mongo-db-api-coral.vercel.app/connectToMongoDB"
+            val apiUrl = "https://mongo-db-api-coral.vercel.app/mongoDB/connect"
 
             Log.d("APIError", uri)
             val jsonObject = JSONObject()
             jsonObject.put("uri", uri)
+            jsonObject.put("userId", userId)
             Log.d("APIError", jsonObject.toString())
 
             try {
