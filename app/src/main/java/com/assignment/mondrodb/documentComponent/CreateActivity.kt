@@ -120,6 +120,8 @@ class CreateActivity : AppCompatActivity() {
             jsonObject.put("userId", getUserId())
             jsonObject.put("pDoc", jsonDoc)
 
+            Log.d("jsonObject", jsonObject.toString())
+
             try {
                 val response = withContext(Dispatchers.IO) {
                     makeApiCallWithContext(apiUrl, jsonObject)

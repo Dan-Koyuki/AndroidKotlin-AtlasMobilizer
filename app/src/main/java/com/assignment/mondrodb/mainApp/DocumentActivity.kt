@@ -66,7 +66,7 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
         }
 
         // Refresh
-        val refresh : ImageView = findViewById(R.id.ivCollectionRefreshButton)
+        val refresh : ImageView = findViewById(R.id.ivDBRefreshButton)
         refresh.setOnClickListener {
             vList.clear()
             vAdapter.notifyDataSetChanged() // Notify the adapter to reflect the changes
@@ -76,7 +76,7 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
         }
 
         // Create
-        val create : ImageView = findViewById(R.id.tvCreateCollectionBtn)
+        val create : ImageView = findViewById(R.id.tvCreateDocumentBtn)
         create.setOnClickListener {
             val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
@@ -100,7 +100,7 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 Log.d("APIError", response)
 
                 if (response.isNotEmpty()) {
-                    // Assuming the response is an array of strings representing database names
+                    // Assuming the response is an array of strings representing document _id
                     val gson = Gson()
                     val documentsIDArray = gson.fromJson(response, APIResponse::class.java)
                     Log.d("APIError", documentsIDArray.toString())
@@ -108,7 +108,7 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
                     // Clear the existing list
                     vList.clear()
 
-                    // Add each database name to the list as APIModel objects
+                    // Add each document _id to the list as APIModel objects
                     documentsIDArray.list.forEach { documentsID ->
                         val documentsModel = APIModel(documentsID)
                         vList.add(documentsModel)
