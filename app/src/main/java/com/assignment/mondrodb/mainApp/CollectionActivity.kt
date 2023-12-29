@@ -109,6 +109,7 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
     private fun getCollectionList(){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/collection"
+//            val apiUrl = "http://localhost:3000/collection"
 
             val jsonObject = JSONObject()
             jsonObject.put("userId", getUserId())
@@ -209,6 +210,7 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
     private fun select(pCollectionName: String){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/collection/select"
+//            val apiUrl = "http://localhost:3000/collection/select"
 
             val jsonObject = JSONObject()
             jsonObject.put("vCollectionName", pCollectionName)

@@ -3,7 +3,6 @@ package com.assignment.mondrodb.mainApp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.Volley
 import com.assignment.mondrodb.R
 import com.assignment.mondrodb.documentComponent.CreateActivity
+import com.assignment.mondrodb.documentComponent.DetailsActivity
 import com.assignment.mondrodb.myAdapter.APIAdapter
 import com.assignment.mondrodb.myModel.APIModel
 import com.assignment.mondrodb.myModel.APIResponse
@@ -43,6 +43,7 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
 
         getDocumentList()
 
+        btnHandler()
     }
 
     private fun getUserId(): String {
@@ -51,7 +52,13 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
     }
 
     override fun onClick(pDBName: String) {
-        TODO("Go to Detailed Documents where update and delete button of that document exist there")
+        try{
+            val intent = Intent(this, DetailsActivity::class.java)
+            intent.putExtra("DocumentId", pDBName)
+            startActivity(intent)
+        } catch (e: Exception){
+            Log.d("ClickError: ", e.toString())
+        }
     }
 
     private fun btnHandler(){
@@ -88,6 +95,7 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
     private fun getDocumentList(){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/documents"
+//            val apiUrl = "http://localhost:3000/documents"
 
             val jsonObject = JSONObject()
             jsonObject.put("userId", getUserId())
@@ -121,7 +129,7 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 }
 
             } catch (e: Exception) {
-                Toast.makeText(this@DocumentActivity, "Error: $e", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@DocumentActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 Log.d("APIError", "Error: $e")
             }
         }

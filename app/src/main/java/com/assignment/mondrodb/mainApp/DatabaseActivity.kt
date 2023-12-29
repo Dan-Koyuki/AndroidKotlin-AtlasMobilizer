@@ -109,6 +109,7 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
     private fun getDatabaseList(){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/db"
+//            val apiUrl = "http://localhost:3000/db"
 
             val jsonObject = JSONObject()
             jsonObject.put("userId", getUserId())
@@ -204,6 +205,7 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
     private fun select(pDBName: String){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/db/select"
+//            val apiUrl = "http://localhost:3000/db/select"
 
             val jsonObject = JSONObject()
             jsonObject.put("vDBName", pDBName)

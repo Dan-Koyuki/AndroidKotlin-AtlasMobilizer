@@ -91,6 +91,7 @@ class ConnectionActivity : AppCompatActivity() {
     private fun connectToMongo(uri: String, userId: String?) {
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/mongoDB/connect"
+//            val apiUrl = "http://localhost:3000/mongoDB/connect"
 
             Log.d("APIError", uri)
             val jsonObject = JSONObject()
