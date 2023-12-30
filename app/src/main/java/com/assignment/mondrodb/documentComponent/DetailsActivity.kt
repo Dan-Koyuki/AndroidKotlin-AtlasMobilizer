@@ -11,11 +11,10 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.assignment.mondrodb.R
-import com.assignment.mondrodb.mainApp.DashboardSettings
-import com.assignment.mondrodb.myAdapter.APIAdapter
 import com.assignment.mondrodb.myAdapter.DocumentAdapter
 import com.assignment.mondrodb.myModel.DocumentDetails
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -35,7 +34,7 @@ class DetailsActivity : AppCompatActivity() {
     private lateinit var requestQueue: RequestQueue
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private lateinit var vAuth : FirebaseAuth
-    private lateinit var vList : ArrayList<DocumentDetails>
+    private var vDocument: Map<String, Any>? = null
     private lateinit var vView : RecyclerView
     private lateinit var vAdapter : DocumentAdapter
 
@@ -47,13 +46,19 @@ class DetailsActivity : AppCompatActivity() {
 
         requestQueue = Volley.newRequestQueue(this)
         vView = findViewById(R.id.rvDocumentDetails)
-        vList = ArrayList()
 
-        vAdapter = DocumentAdapter(vList)
+        vDocument?.let {
+            vAdapter = DocumentAdapter(it)
+            vView.adapter = vAdapter
+        }
 
         vView.adapter = vAdapter
         vView.setHasFixedSize(true)
         vView.layoutManager = LinearLayoutManager(this)
+
+//        btnHandler()
+
+        getDocument()
 
     }
 
@@ -62,7 +67,7 @@ class DetailsActivity : AppCompatActivity() {
         return currentUser?.uid.toString()
     }
 
-    protected suspend fun makeApiCallWithContext(apiUrl: String, jsonObject: JSONObject): String {
+    private suspend fun makeApiCallWithContext(apiUrl: String, jsonObject: JSONObject): String {
         return suspendCancellableCoroutine { continuation ->
             val request = JsonObjectRequest(
                 Request.Method.POST, apiUrl, jsonObject,
@@ -76,14 +81,14 @@ class DetailsActivity : AppCompatActivity() {
 
             requestQueue.add(request)
             continuation.invokeOnCancellation {
-                requestQueue.cancelAll(DetailsActivity.TAG) // Cancel the request if coroutine is cancelled
+                requestQueue.cancelAll(TAG) // Cancel the request if coroutine is cancelled
             }
         }
     }
 
     private fun getDocument(){
         coroutineScope.launch {
-            val apiUrl = "https://mongo-db-api-coral.vercel.app/document/select"
+            val apiUrl = "https://mongo-db-api-coral.vercel.app/documents/select"
 
             val jsonObject = JSONObject()
             jsonObject.put("userId", getUserId())
@@ -102,27 +107,11 @@ class DetailsActivity : AppCompatActivity() {
                     // vList is expecting DocumentDetails as element of its array
                     // DocumentDetails expecting vMap: Map<String, Any>
                     // Parse the JSON response string into a JSONObject
-                    val jsonResponse = JSONObject(response)
+                    val gson = Gson()
+                    val documentResponse = gson.fromJson(response, DocumentDetails::class.java)
 
-                    // Extract the "document" object from the JSON response
-                    val documentObject = jsonResponse.getJSONObject("document")
-
-                    // Create a Map<String, Any> to hold the document details
-                    val documentMap = mutableMapOf<String, Any>()
-
-                    // Iterate through the keys in the documentObject and add them to the documentMap
-                    val keys = documentObject.keys()
-                    while (keys.hasNext()) {
-                        val key = keys.next()
-                        val value = documentObject.opt(key) // Get the value corresponding to the key
-
-                        // Add key-value pair to the documentMap
-                        documentMap[key] = value ?: "" // Replace null values with an appropriate default value
-                    }
-
-                    // Add the documentMap to your vList of DocumentDetails
-                    vList.add(DocumentDetails(documentMap)) // Assuming DocumentDetails accepts a Map<String, Any> in its constructor
-                    vAdapter.notifyDataSetChanged() // Notify the adapter of changes in the list
+                    val documentMap = documentResponse.document
+                    vDocument = documentMap
 
                 } else {
                     Toast.makeText(this@DetailsActivity, "Failed, Please Check Your Connection or Database Permission!", Toast.LENGTH_SHORT).show()

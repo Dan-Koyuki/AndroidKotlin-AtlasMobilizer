@@ -8,7 +8,7 @@
     android:background="@drawable/main_background">
 
     <ImageView
-        android:id="@+id/ivLogoutBtnI"
+        android:id="@+id/ivLogoutBtn"
         android:layout_width="@dimen/btn_scale_w2"
         android:layout_height="@dimen/btn_scale_h2"
         android:src="@drawable/btn_logout"
@@ -55,6 +55,7 @@
         android:padding="10dp"
         android:singleLine="true"
         android:textSize="16sp"
+        android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvUsernameLabel" />
@@ -83,6 +84,7 @@
         android:hint="@string/connectionHint"
         android:inputType="text"
         android:minHeight="48dp"
+        android:textColor="@color/black"
         android:padding="10dp"
         android:singleLine="true"
         android:textSize="16sp"

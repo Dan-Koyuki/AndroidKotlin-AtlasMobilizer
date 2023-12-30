@@ -12,8 +12,8 @@ android {
         applicationId = "com.assignment.mondrodb"
         minSdk = 24
         targetSdk = 33
-        versionCode = 4
-        versionName = "4.4"
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,4 +55,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("com.android.volley:volley:1.2.1")
     implementation("com.google.code.gson:gson:2.8.9")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }

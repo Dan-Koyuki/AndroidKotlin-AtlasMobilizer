@@ -26,9 +26,11 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_database)
 
+        // set Cluster Name
         val clusterName = findViewById<TextView>(R.id.tvClusterName)
         clusterName.text = intent.getStringExtra("Cluster")
 
+        // Initialization
         vAuth = FirebaseAuth.getInstance()
 
         requestQueue = Volley.newRequestQueue(this)
@@ -41,16 +43,16 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
         vView.setHasFixedSize(true)
         vView.layoutManager = LinearLayoutManager(this)
 
+        // First Time retrieving Database List within Cluster
         getDatabaseList()
 
+        // Initialize Button Behaviour
         btnHandler()
     }
 
-    private fun getUserId(): String {
-        val currentUser = vAuth.currentUser
-        return currentUser?.uid.toString()
-    }
-
+    // onClick: Click Behaviour for Item in Recycler View (List)
+    // params@... : Clicked Item Value
+    // invoke@select()
     override fun onClick(pDBName: String) {
         try {
             select(pDBName)
@@ -63,6 +65,12 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
         startActivity(intent)
     }
 
+    // btnHandler: Initialize button behaviour
+    // initialize:
+    //  Disconnect -> invoke@disconnect() (from Parent class)
+    //  Refresh -> invoke@getDatabaseList()
+    //  Create -> invoke@create()
+    //  Remove -> invoke@remove()
     private fun btnHandler(){
         // Disconnect
         val disconnect : ImageView = findViewById(R.id.ivDisconnectBtn)
@@ -75,7 +83,7 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
         }
 
         // Refresh
-        val refresh : ImageView = findViewById(R.id.ivDBRefreshButton)
+        val refresh : ImageView = findViewById(R.id.databaseRefreshButton)
         refresh.setOnClickListener {
             vList.clear()
             vAdapter.notifyDataSetChanged() // Notify the adapter to reflect the changes
@@ -84,10 +92,10 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
             getDatabaseList()
         }
 
-        val databasename : EditText = findViewById(R.id.DatabaseName)
+        val databasename : EditText = findViewById(R.id.databaseNameInput)
 
         // Create
-        val create : ImageView = findViewById(R.id.tvCreateDatabaseBtn)
+        val create : ImageView = findViewById(R.id.databaseCreateButton)
         create.setOnClickListener {
             try {
                 val dbname = databasename.text.toString()
@@ -98,7 +106,7 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
         }
 
         // Remove
-        val remove : ImageView = findViewById(R.id.tvRemoveDatabaseBtn)
+        val remove : ImageView = findViewById(R.id.databaseRemoveButton)
         remove.setOnClickListener {
             val dbname = databasename.text.toString()
             remove(dbname)
@@ -106,6 +114,8 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
 
     }
 
+    // getDatabaseList: Retrieve Database list within a Cluster
+    // APIEndpoints: db
     private fun getDatabaseList(){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/db"
@@ -119,7 +129,7 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
                     makeApiCallWithContext(apiUrl, jsonObject)
                 }
 
-                Log.d("APIError", response)
+                Log.d("Database Retrieve Response", response)
 
                 // Assuming the response is an array of strings representing database names
                 val gson = Gson()
@@ -138,12 +148,16 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 vAdapter.notifyDataSetChanged()
 
             } catch (e: Exception) {
-                Toast.makeText(this@DatabaseActivity, "Error: $e", Toast.LENGTH_SHORT).show()
-                Log.d("APIError", "Error: $e")
+                Toast.makeText(this@DatabaseActivity, "Unexpected Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@DatabaseActivity, "Refresh or Try Again after a moment!", Toast.LENGTH_SHORT).show()
+                Log.d("Database Retrieve Error", "${e.message}")
             }
         }
     }
 
+    // create: Create new Database
+    // params@pDBName: New Database Name
+    // APIEndpoint: db/create
     private fun create(pDBName: String){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/db/create"
@@ -151,7 +165,7 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
             val jsonObject = JSONObject()
             jsonObject.put("vDBName", pDBName)
             jsonObject.put("userId", getUserId())
-            Log.d("APIError", jsonObject.toString())
+            Log.d("Requested JSONObject DB Create", jsonObject.toString())
 
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -162,17 +176,21 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 if (response.contains("Database Created!")) {
                     Toast.makeText(this@DatabaseActivity, "Created!!Refresh to see result", Toast.LENGTH_SHORT).show()
                 } else {
+                    Toast.makeText(this@DatabaseActivity, "Unexpected Response,Try Again Later!", Toast.LENGTH_SHORT).show()
                     // Handle unexpected response
-                    Log.d("APIError", "Unexpected response: $response")
+                    Log.d("Database Create Error", response)
                 }
             } catch (e: Exception) {
                 // Handle error
                 Toast.makeText(this@DatabaseActivity, "Error: Check your Connection or Role Permission", Toast.LENGTH_SHORT).show()
-                Log.d("APIError", "Error: $e")
+                Log.d("Database Create Error", "{$e.message}")
             }
         }
     }
 
+    // remove: Remove a Database
+    // params@pDBName: Removed Database Name
+    // APIEndpoint: db/remove
     private fun remove(pDBName: String){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/db/remove"
@@ -180,7 +198,7 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
             val jsonObject = JSONObject()
             jsonObject.put("vDBName", pDBName)
             jsonObject.put("userId", getUserId())
-            Log.d("APIError", jsonObject.toString())
+            Log.d("Requested JSONObject DB Remove", jsonObject.toString())
 
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -191,17 +209,22 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 if (response.contains("Database Removed!")) {
                     Toast.makeText(this@DatabaseActivity, "Removed!!Refresh to see result", Toast.LENGTH_SHORT).show()
                 } else {
+                    Toast.makeText(this@DatabaseActivity, "Unexpected Response,Try Again Later!", Toast.LENGTH_SHORT).show()
                     // Handle unexpected response
-                    Log.d("APIError", "Unexpected response: $response")
+                    Log.d("Database Remove Error", "Unexpected response: $response")
                 }
             } catch (e: Exception) {
                 // Handle error
                 Toast.makeText(this@DatabaseActivity, "Error: Check your Connection or Role Permission", Toast.LENGTH_SHORT).show()
-                Log.d("APIError", "Error: $e")
+                Log.d("Database Remove Error", "Error: ${e.message}")
             }
         }
     }
 
+
+    // remove: Select a Database
+    // params@pDBName: Selected Database Name
+    // APIEndpoint: db/select
     private fun select(pDBName: String){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/db/select"
@@ -221,13 +244,14 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 if (response.contains("Database Selected!")) {
                     Toast.makeText(this@DatabaseActivity, "Database $pDBName has been selected!", Toast.LENGTH_SHORT).show()
                 } else {
+                    Toast.makeText(this@DatabaseActivity, "Unexpected Response,Try Again Later!", Toast.LENGTH_SHORT).show()
                     // Handle unexpected response
-                    Log.d("APIError", "Unexpected response: $response")
+                    Log.d("Selected Database Error", "Unexpected response: $response")
                 }
             } catch (e: Exception) {
                 // Handle error
                 Toast.makeText(this@DatabaseActivity, "Error: Check your Connection!", Toast.LENGTH_SHORT).show()
-                Log.d("APIError", "Error: $e")
+                Log.d("Selected Database Error", "Error: ${e.message}")
             }
         }
     }

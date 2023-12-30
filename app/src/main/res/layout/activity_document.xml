@@ -106,7 +106,7 @@
         android:foregroundGravity="top"
         android:layout_margin="8dp">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvDatabaseList"
+            android:id="@+id/documentList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/api_item_model"

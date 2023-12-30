@@ -44,10 +44,22 @@ class ConnectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.connection_view)
 
+        // Initialization
         auth = FirebaseAuth.getInstance()
         requestQueue = Volley.newRequestQueue(this)
 
-        val logout : ImageView = findViewById(R.id.ivLogoutBtnI)
+        btnHandler()
+
+    }
+
+    // btnHandler: Initialize Button Behaviour
+    // Initialize Button:
+    //  Logout: invoke@Firebase signOut()
+    //  Connect: invoke@connectToMongo()
+    //  Help: invoke@showHelpDialog()
+    private fun btnHandler(){
+
+        val logout : ImageView = findViewById(R.id.ivLogoutBtn)
         logout.setOnClickListener {
             auth.signOut()
             val landIntent = Intent(this, LandingViewActivity::class.java)
@@ -56,11 +68,6 @@ class ConnectionActivity : AppCompatActivity() {
             finish()
         }
 
-        btnHandler()
-
-    }
-
-    private fun btnHandler(){
         val connectionString : EditText = findViewById(R.id.etMongoConnection)
         val clusterName : EditText = findViewById(R.id.etMongoCluster)
         val connectBtn : ImageView = findViewById(R.id.ivConnectBtn)
@@ -68,26 +75,29 @@ class ConnectionActivity : AppCompatActivity() {
             val userId = auth.currentUser?.uid
             val uri = connectionString.text.toString()
             val cluster = clusterName.text.toString()
-            Log.d("APIError", uri)
+            Log.d("MongoDB Connection String", uri)
             try {
                 connectToMongo(uri, userId)
+                val intent = Intent(this, DatabaseActivity::class.java)
+                intent.putExtra("Cluster", cluster)
+                startActivity(intent)
+                finish()
             } catch (e: Exception) {
-                Toast.makeText(this@ConnectionActivity, "Error: $e", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ConnectionActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-            val intent = Intent(this, DatabaseActivity::class.java)
-            intent.putExtra("Cluster", cluster)
-            startActivity(intent)
-            finish()
         }
-
-        
 
         val helpBtn : ImageView = findViewById(R.id.ivConnectionHelpBtn)
         helpBtn.setOnClickListener{
             showHelpDialog()
         }
+
     }
 
+    // connectToMongo: Make connection to MongoDB Cluster
+    // params@uri: Connection String of MongoDB
+    // params@userId: userId from Firebase Authentication
+    // APIEndpoints: mongoDB/connect
     private fun connectToMongo(uri: String, userId: String?) {
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/mongoDB/connect"
@@ -97,7 +107,7 @@ class ConnectionActivity : AppCompatActivity() {
             val jsonObject = JSONObject()
             jsonObject.put("uri", uri)
             jsonObject.put("userId", userId)
-            Log.d("APIError", jsonObject.toString())
+            Log.d("Requested JSONObject Connect", jsonObject.toString())
 
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -108,17 +118,21 @@ class ConnectionActivity : AppCompatActivity() {
                 if (response.contains("Connected to MongoDB Atlas")) {
                     Toast.makeText(this@ConnectionActivity, "Connected!!", Toast.LENGTH_SHORT).show()
                 } else {
+                    Toast.makeText(this@ConnectionActivity, "Unexpected Response has Occurred, Please Try Again Later.", Toast.LENGTH_SHORT).show()
                     // Handle unexpected response
                     Log.d("APIError", "Unexpected response: $response")
                 }
             } catch (e: Exception) {
                 // Handle error
-                Toast.makeText(this@ConnectionActivity, "Error: $e", Toast.LENGTH_SHORT).show()
-                Log.d("APIError", "Error: $e")
+                Toast.makeText(this@ConnectionActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.d("APIError", "Error: ${e.message}")
             }
         }
     }
 
+    // makeApiCall: handle interaction with backend using Volley
+    // params@apiUrl: url endpoint
+    // params@jsonObject: requested jsonObject by the endpoint
     private suspend fun makeApiCall(apiUrl: String, jsonObject: JSONObject): String {
         return suspendCancellableCoroutine { continuation ->
             val request = JsonObjectRequest(
@@ -138,6 +152,7 @@ class ConnectionActivity : AppCompatActivity() {
         }
     }
 
+    // showHelpDialog: pop-up a dialog containing information of the view
     private fun showHelpDialog() {
         val builder = AlertDialog.Builder(this, R.style.TransparentDialog)
         // Create a custom title TextView with a larger text size and bold style
@@ -174,6 +189,8 @@ class ConnectionActivity : AppCompatActivity() {
         }
     }
 
+    // openWebPage: open target webpage in a browser or suitable app
+    // params@url: url of target
     private fun openWebPage(url: String) {
         val uri = Uri.parse(url)
         val intent = Intent(Intent.ACTION_VIEW, uri)

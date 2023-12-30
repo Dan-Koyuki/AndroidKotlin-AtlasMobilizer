@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.assignment.mondrodb.R
 import com.assignment.mondrodb.myModel.DocumentDetails
 
-class DocumentAdapter (private val mList: ArrayList<DocumentDetails>): RecyclerView.Adapter<DocumentAdapter.ViewHolder>() {
+class DocumentAdapter (private val document: Map<String, Any>): RecyclerView.Adapter<DocumentAdapter.ViewHolder>() {
     class ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         val keyField: TextView = itemView.findViewById(R.id.tvDocumentKey)
         val valueField: TextView = itemView.findViewById(R.id.tvDocumentValue)
@@ -22,18 +22,16 @@ class DocumentAdapter (private val mList: ArrayList<DocumentDetails>): RecyclerV
     }
 
     override fun getItemCount(): Int {
-        return mList.size
+        return document.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val document = mList[position]
+        val keys = document.keys.toList()
+        val values = document.values.toList()
 
-        val keys = document.vMap.keys.toList()
-        val values = document.vMap.values.toList()
-
-        // Assuming you want to display the first key-value pair in the TextViews
-        holder.keyField.text = keys.firstOrNull()
-        holder.valueField.text = values.firstOrNull().toString()
+        // Use keys and values to populate your ViewHolder views
+        holder.keyField.text = keys.getOrNull(position) ?: ""
+        holder.valueField.text = values.getOrNull(position).toString()
     }
 
 

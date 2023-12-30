@@ -26,13 +26,15 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collection)
 
+        // Set Database Name with Selected Database
         val databaseName = findViewById<TextView>(R.id.tvDatabaseName)
         databaseName.text = intent.getStringExtra("DBName")
 
+        // Initialization
         vAuth = FirebaseAuth.getInstance()
 
         requestQueue = Volley.newRequestQueue(this)
-        vView = findViewById(R.id.rvCollectionList)
+        vView = findViewById(R.id.collectionList)
         vList = ArrayList()
 
         vAdapter = APIAdapter(vList, this@CollectionActivity)
@@ -41,16 +43,16 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
         vView.setHasFixedSize(true)
         vView.layoutManager = LinearLayoutManager(this)
 
+        // Retrieve Collection List First Time
         getCollectionList()
 
+        // Add Button Functionality
         btnHandler()
     }
 
-    private fun getUserId(): String {
-        val currentUser = vAuth.currentUser
-        return currentUser?.uid.toString()
-    }
-
+    // onClick: Click Behaviour for Item in Recycler View (List)
+    // params@... : Clicked Item Value
+    // invoke@select()
     override fun onClick(pDBName: String) {
         try {
             select(pDBName)
@@ -63,8 +65,10 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
         startActivity(intent)
     }
 
+    // btnHandler: Initialize Button Behaviour
     private fun btnHandler(){
         // Disconnect
+        // invoke@disconnect() (From Parent Activity)
         val disconnect : ImageView = findViewById(R.id.ivDisconnectBtn)
         disconnect.setOnClickListener {
             disconnect()
@@ -75,19 +79,21 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
         }
 
         // Refresh
-        val refresh : ImageView = findViewById(R.id.ivCollectionRefreshButton)
+        // invoke@getCollectionList
+        val refresh : ImageView = findViewById(R.id.collectionRefreshButton)
         refresh.setOnClickListener {
             vList.clear()
             vAdapter.notifyDataSetChanged() // Notify the adapter to reflect the changes
 
-            // Trigger the API call again to fetch the updated database list
+            // Trigger the API call again to fetch the updated collection list
             getCollectionList()
         }
 
-        val collectionname : EditText = findViewById(R.id.CollectionName)
+        val collectionname : EditText = findViewById(R.id.collectionNameInput)
 
         // Create
-        val create : ImageView = findViewById(R.id.tvCreateCollectionBtn)
+        // invoke@create()
+        val create : ImageView = findViewById(R.id.collectionCreateButton)
         create.setOnClickListener {
             try {
                 val collectionsname = collectionname.text.toString()
@@ -98,7 +104,8 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
         }
 
         // Remove
-        val remove : ImageView = findViewById(R.id.tvRemoveCollectionBtn)
+        // invoke@remove()
+        val remove : ImageView = findViewById(R.id.collectionRemoveButton)
         remove.setOnClickListener {
             val collectionsname = collectionname.text.toString()
             remove(collectionsname)
@@ -106,6 +113,8 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
 
     }
 
+    // getCollectionList: Retrieve Collection List of a Database
+    // @APIEndpoints: collection
     private fun getCollectionList(){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/collection"
@@ -119,18 +128,18 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
                     makeApiCallWithContext(apiUrl, jsonObject)
                 }
 
-                Log.d("APIError", response)
+                Log.d("Collection Response", response)
 
                 if (response.isNotEmpty()) {
-                    // Assuming the response is an array of strings representing database names
+                    // Assuming the response is an array of strings representing collection names
                     val gson = Gson()
                     val collectionNamesArray = gson.fromJson(response, APIResponse::class.java)
-                    Log.d("APIError", collectionNamesArray.toString())
+                    Log.d("Collection Array", collectionNamesArray.toString())
 
                     // Clear the existing list
                     vList.clear()
 
-                    // Add each database name to the list as APIModel objects
+                    // Add each collection name to the list as APIModel objects
                     collectionNamesArray.list.forEach { collectionName ->
                         val collectionsModel = APIModel(collectionName)
                         vList.add(collectionsModel)
@@ -143,12 +152,15 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 }
 
             } catch (e: Exception) {
-                Toast.makeText(this@CollectionActivity, "Error: $e", Toast.LENGTH_SHORT).show()
-                Log.d("APIError", "Error: $e")
+                Toast.makeText(this@CollectionActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.d("Collection Fetch Error", "Error: ${e.message}")
             }
         }
     }
 
+    // create: Create New Collection by Given Name
+    // params@pCollectionName: Collection Name to be Created
+    // @APIEndpoints: collection/create
     private fun create(pCollectionName: String){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/collection/create"
@@ -156,7 +168,7 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
             val jsonObject = JSONObject()
             jsonObject.put("vCollectionName", pCollectionName)
             jsonObject.put("userId", getUserId())
-            Log.d("APIError", jsonObject.toString())
+            Log.d("Requested JSONObject Create", jsonObject.toString())
 
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -167,17 +179,21 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 if (response.contains("Collection Created!")) {
                     Toast.makeText(this@CollectionActivity, "Created!!Refresh to see result", Toast.LENGTH_SHORT).show()
                 } else {
+                    Toast.makeText(this@CollectionActivity, "Unexpected Response has Occurred, Please Try Again Later.", Toast.LENGTH_SHORT).show()
                     // Handle unexpected response
-                    Log.d("APIError", "Unexpected response: $response")
+                    Log.d("Create Collection Error", "Unexpected response: $response")
                 }
             } catch (e: Exception) {
                 // Handle error
                 Toast.makeText(this@CollectionActivity, "Error: Check your Connection or Role Permission", Toast.LENGTH_SHORT).show()
-                Log.d("APIError", "Error: $e")
+                Log.d("Collection Create Error", "Error: ${e.message}")
             }
         }
     }
 
+    // remove: Remove a Collection with same Name as Input
+    // params@pCollectionName: Collection Name to be Removed (Collection need to exist)
+    // APIEndpoints: collection/remove
     private fun remove(pCollectionName: String){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/collection/remove"
@@ -185,7 +201,7 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
             val jsonObject = JSONObject()
             jsonObject.put("vCollectionName", pCollectionName)
             jsonObject.put("userId", getUserId())
-            Log.d("APIError", jsonObject.toString())
+            Log.d("Requested JSONObject Remove", jsonObject.toString())
 
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -196,17 +212,21 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 if (response.contains("Collection Removed!")) {
                     Toast.makeText(this@CollectionActivity, "Removed!!Refresh to see result", Toast.LENGTH_SHORT).show()
                 } else {
+                    Toast.makeText(this@CollectionActivity, "Unexpected Response has Occurred, Please Try Again Later.", Toast.LENGTH_SHORT).show()
                     // Handle unexpected response
-                    Log.d("APIError", "Unexpected response: $response")
+                    Log.d("Collection Remove Error", "Unexpected response: $response")
                 }
             } catch (e: Exception) {
                 // Handle error
                 Toast.makeText(this@CollectionActivity, "Error: Check your Connection or Role Permission", Toast.LENGTH_SHORT).show()
-                Log.d("APIError", "Error: $e")
+                Log.d("Collection Remove Error", "Error: ${e.message}")
             }
         }
     }
 
+    // select: Select a Collection to Work in
+    // params@pCollectionName: Collection Name to be selected
+    // APIEndpoints: collection/select
     private fun select(pCollectionName: String){
         coroutineScope.launch {
             val apiUrl = "https://mongo-db-api-coral.vercel.app/collection/select"
@@ -215,7 +235,7 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
             val jsonObject = JSONObject()
             jsonObject.put("vCollectionName", pCollectionName)
             jsonObject.put("userId", getUserId())
-            Log.d("APIError", jsonObject.toString())
+            Log.d("Requested JSONObject Select", jsonObject.toString())
 
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -226,13 +246,15 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 if (response.contains("Collection Selected!")) {
                     Toast.makeText(this@CollectionActivity, "Collection $pCollectionName has been selected!", Toast.LENGTH_SHORT).show()
                 } else {
+                    Toast.makeText(this@CollectionActivity, "Unexpected Response has Occurred, Please Turn Back.", Toast.LENGTH_SHORT).show()
+
                     // Handle unexpected response
-                    Log.d("APIError", "Unexpected response: $response")
+                    Log.d("Collection Select Error", "Unexpected response: $response")
                 }
             } catch (e: Exception) {
                 // Handle error
                 Toast.makeText(this@CollectionActivity, "Error: Check your Connection!", Toast.LENGTH_SHORT).show()
-                Log.d("APIError", "Error: $e")
+                Log.d("Collection Select Error", "Error: ${e.message}")
             }
         }
     }

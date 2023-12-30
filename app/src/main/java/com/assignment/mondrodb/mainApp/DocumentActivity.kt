@@ -14,12 +14,18 @@ import com.assignment.mondrodb.documentComponent.DetailsActivity
 import com.assignment.mondrodb.myAdapter.APIAdapter
 import com.assignment.mondrodb.myModel.APIModel
 import com.assignment.mondrodb.myModel.APIResponse
+import com.assignment.mondrodb.myModel.RetrofitDocument
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +38,7 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
         vAuth = FirebaseAuth.getInstance()
 
         requestQueue = Volley.newRequestQueue(this)
-        vView = findViewById(R.id.rvDatabaseList)
+        vView = findViewById(R.id.documentList)
         vList = ArrayList()
 
         vAdapter = APIAdapter(vList, this@DocumentActivity)
@@ -42,13 +48,8 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
         vView.layoutManager = LinearLayoutManager(this)
 
         getDocumentList()
-
+//        getDocument()
         btnHandler()
-    }
-
-    private fun getUserId(): String {
-        val currentUser = vAuth.currentUser
-        return currentUser?.uid.toString()
     }
 
     override fun onClick(pDBName: String) {
@@ -80,6 +81,7 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
 
             // Trigger the API call again to fetch the updated documents list
             getDocumentList()
+//            getDocument()
         }
 
         // Create
@@ -133,6 +135,40 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
                 Log.d("APIError", "Error: $e")
             }
         }
+    }
+
+    private fun getDocument(){
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://mongo-db-api-coral.vercel.app/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(RetrofitDocument::class.java)
+
+        val call = service.getDocument(getUserId())
+        call.enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                Log.d("Response", response.body().toString())
+                if (response.isSuccessful){
+                    val document = response.body()
+
+                    Toast.makeText(this@DocumentActivity, "Document is ${document?.joinToString(", ")}", Toast.LENGTH_LONG).show()
+
+                    document?.forEach { ID ->
+                        val documentID = APIModel(ID)
+                        vList.add(documentID)
+                    }
+
+                    vAdapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(this@DocumentActivity, response.body().toString(), Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                Toast.makeText(this@DocumentActivity, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
 }
