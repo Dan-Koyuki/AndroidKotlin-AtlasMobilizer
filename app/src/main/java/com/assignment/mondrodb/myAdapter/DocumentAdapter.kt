@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.assignment.mondrodb.R
 import com.assignment.mondrodb.myModel.DocumentDetails
 
-class DocumentAdapter (private val document: Map<String, Any>): RecyclerView.Adapter<DocumentAdapter.ViewHolder>() {
+class DocumentAdapter (private val document: Map<String, String>): RecyclerView.Adapter<DocumentAdapter.ViewHolder>() {
     class ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         val keyField: TextView = itemView.findViewById(R.id.tvDocumentKey)
         val valueField: TextView = itemView.findViewById(R.id.tvDocumentValue)
@@ -31,7 +31,7 @@ class DocumentAdapter (private val document: Map<String, Any>): RecyclerView.Ada
 
         // Use keys and values to populate your ViewHolder views
         holder.keyField.text = keys.getOrNull(position) ?: ""
-        holder.valueField.text = values.getOrNull(position).toString()
+        holder.valueField.text = values.getOrNull(position) ?: ""
     }
 
 

@@ -34,7 +34,7 @@ class DetailsActivity : AppCompatActivity() {
     private lateinit var requestQueue: RequestQueue
     private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private lateinit var vAuth : FirebaseAuth
-    private var vDocument: Map<String, Any>? = null
+    private var vDocument: Map<String, String>? = null
     private lateinit var vView : RecyclerView
     private lateinit var vAdapter : DocumentAdapter
 
@@ -111,7 +111,10 @@ class DetailsActivity : AppCompatActivity() {
                     val documentResponse = gson.fromJson(response, DocumentDetails::class.java)
 
                     val documentMap = documentResponse.document
-                    vDocument = documentMap
+                    val stringDocumentMap = documentMap.mapValues { (_, value) ->
+                        value.toString()
+                    }
+                    vDocument = stringDocumentMap
 
                 } else {
                     Toast.makeText(this@DetailsActivity, "Failed, Please Check Your Connection or Database Permission!", Toast.LENGTH_SHORT).show()
