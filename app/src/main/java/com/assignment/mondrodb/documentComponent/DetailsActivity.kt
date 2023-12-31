@@ -1,8 +1,13 @@
 package com.assignment.mondrodb.documentComponent
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +16,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.assignment.mondrodb.R
+import com.assignment.mondrodb.mainApp.DocumentActivity
 import com.assignment.mondrodb.myAdapter.DocumentAdapter
 import com.assignment.mondrodb.myModel.DocumentDetails
 import com.google.firebase.auth.FirebaseAuth
@@ -47,19 +53,18 @@ class DetailsActivity : AppCompatActivity() {
         requestQueue = Volley.newRequestQueue(this)
         vView = findViewById(R.id.rvDocumentDetails)
 
-        vDocument?.let {
-            vAdapter = DocumentAdapter(it)
-            vView.adapter = vAdapter
-        }
-
-        vView.adapter = vAdapter
         vView.setHasFixedSize(true)
         vView.layoutManager = LinearLayoutManager(this)
 
-//        btnHandler()
+        btnHandler()
 
         getDocument()
 
+    }
+
+    private fun setupAdapter(documentMap: Map<String, String>) {
+        vAdapter = DocumentAdapter(documentMap)
+        vView.adapter = vAdapter
     }
 
     private fun getUserId(): String {
@@ -111,10 +116,9 @@ class DetailsActivity : AppCompatActivity() {
                     val documentResponse = gson.fromJson(response, DocumentDetails::class.java)
 
                     val documentMap = documentResponse.document
-                    val stringDocumentMap = documentMap.mapValues { (_, value) ->
-                        value.toString()
-                    }
-                    vDocument = stringDocumentMap
+                    vDocument = documentMap
+
+                    vDocument?.let { setupAdapter(it) }
 
                 } else {
                     Toast.makeText(this@DetailsActivity, "Failed, Please Check Your Connection or Database Permission!", Toast.LENGTH_SHORT).show()
@@ -123,6 +127,14 @@ class DetailsActivity : AppCompatActivity() {
                 Toast.makeText(this@DetailsActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 Log.d("APIError", "Error: $e")
             }
+        }
+    }
+
+    private fun btnHandler(){
+        // Back button logic, intent to DocumentActivity and delete this activity history
+        val backBtn = findViewById<ImageView>(R.id.ivBackBtn)
+        backBtn.setOnClickListener {
+            finish()
         }
     }
 

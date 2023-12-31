@@ -103,8 +103,6 @@ class CreateActivity : AppCompatActivity() {
         // Back button logic, intent to DocumentActivity and delete this activity history
         val backBtn = findViewById<ImageView>(R.id.ivBackBtn)
         backBtn.setOnClickListener {
-            val intent = Intent(this, DocumentActivity::class.java)
-            startActivity(intent)
             finish()
         }
     }
