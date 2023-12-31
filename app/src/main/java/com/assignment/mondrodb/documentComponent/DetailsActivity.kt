@@ -130,11 +130,53 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun remove(){
+        coroutineScope.launch {
+            val apiUrl = "https://mongo-db-api-coral.vercel.app/documents/remove"
+
+            val jsonObject = JSONObject()
+            jsonObject.put("userId", getUserId())
+            jsonObject.put("pID", intent.getStringExtra("DocumentId"))
+
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    makeApiCallWithContext(apiUrl, jsonObject)
+                }
+
+                // Handle success response
+                if (response.contains("Database Removed!")) {
+                    Toast.makeText(this@DetailsActivity, "Removed!!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@DetailsActivity, "Unexpected Response,Try Again Later!", Toast.LENGTH_SHORT).show()
+                    // Handle unexpected response
+                    Log.d("Document Remove Error", "Unexpected response: $response")
+                }
+            } catch (e: Exception) {
+                // Handle error
+                Toast.makeText(this@DetailsActivity, "Error: Check your Connection or Role Permission", Toast.LENGTH_SHORT).show()
+                Log.d("Document Remove Error", "Error: ${e.message}")
+            }
+        }
+    }
+
     private fun btnHandler(){
         // Back button logic, intent to DocumentActivity and delete this activity history
         val backBtn = findViewById<ImageView>(R.id.ivBackBtn)
         backBtn.setOnClickListener {
             finish()
+        }
+
+        //Remove Button
+        val removeBtn = findViewById<ImageView>(R.id.tvRemoveDocumentBtn)
+        removeBtn.setOnClickListener {
+            remove()
+            finish()
+        }
+
+        //Update Button
+        val updateBtn = findViewById<Button>(R.id.btnUpdate)
+        updateBtn.setOnClickListener {
+            Toast.makeText(this@DetailsActivity, "Coming Soon!", Toast.LENGTH_SHORT).show()
         }
     }
 
