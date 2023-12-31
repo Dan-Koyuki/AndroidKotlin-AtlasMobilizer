@@ -8,6 +8,7 @@ import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -106,6 +107,11 @@ class LandingViewActivity : AppCompatActivity() {
         helpBtn.setOnClickListener{
             showHelpDialog()
         }
+
+        val privacy = findViewById<Button>(R.id.PrivacyPolicy)
+        privacy.setOnClickListener {
+            openWebPage("https://www.termsfeed.com/live/0fa27eff-b5db-4a52-954c-492602e6209e")
+        }
     }
 
     private fun showHelpDialog() {
@@ -145,7 +151,7 @@ class LandingViewActivity : AppCompatActivity() {
         }
 
         discordBtn.setOnClickListener {
-            openWebPage("https://discord.com/invite/VupphrUAhk")
+            openWebPage("https://discord.gg/uApdCfZVmp")
             dialog.dismiss()
         }
     }

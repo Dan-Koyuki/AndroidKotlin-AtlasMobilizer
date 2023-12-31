@@ -1,13 +1,10 @@
 package com.assignment.mondrodb.documentComponent
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +13,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.assignment.mondrodb.R
-import com.assignment.mondrodb.mainApp.DocumentActivity
 import com.assignment.mondrodb.myAdapter.DocumentAdapter
 import com.assignment.mondrodb.myModel.DocumentDetails
 import com.google.firebase.auth.FirebaseAuth

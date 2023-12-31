@@ -44,10 +44,19 @@
             android:textColor="@color/clickable" />
 
         <TextView
+            android:id="@+id/mongoConnection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/testConnect"
+            app:layout_constraintTop_toBottomOf="@id/mongoLink"
+            android:textSize="16sp"
+            android:layout_marginStart="32dp" />
+
+        <TextView
             android:id="@+id/mongoLinkII"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/mongoLink"
+            app:layout_constraintTop_toBottomOf="@id/mongoConnection"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:textSize="16sp"
