@@ -20,7 +20,7 @@ Note: This is a beginner project, serving as a learning endeavor and requirement
 - Ideal for users with a single-screen setup who want to ensure their data is stored correctly in their database without switching between tabs or interfaces.
 
 ## Privacy
-Atlas Mobilizer may collect user information, such as email addresses for certain functionalities. For a detailed overview of what data is collected, how it's used, and the measures taken to ensure user privacy, please refer to the Privacy Policy [here](https://www.termsfeed.com/live/0fa27eff-b5db-4a52-954c-492602e6209e).
+Atlas Mobilizer may collect user information, such as email addresses for certain functionalities. For a detailed overview of what data is collected, how it's used, and the measures taken to ensure user privacy, please refer to the Privacy Policy [here](https://dan-koyuki.github.io/Mobile-Native_Atlas-Mobilizer/).
 
 ## Contact
 For any queries or suggestions, feel free to contact me at [dankoyuki398@gmail.com](dankoyuki398@gmail.com).
