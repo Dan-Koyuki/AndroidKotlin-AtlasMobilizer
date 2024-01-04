@@ -91,6 +91,12 @@ class DocumentActivity : DashboardSettings(), APIAdapter.MyClickListener {
             startActivity(intent)
         }
 
+        //help button
+//        val help = findViewById<ImageView>(R.id.ivHelpDocument)
+//        help.setOnClickListener {
+//            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+//        }
+
     }
 
     // get list of document id

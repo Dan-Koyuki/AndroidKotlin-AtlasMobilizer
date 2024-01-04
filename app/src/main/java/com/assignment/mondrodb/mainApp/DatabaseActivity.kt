@@ -112,6 +112,12 @@ class DatabaseActivity : DashboardSettings(), APIAdapter.MyClickListener {
             remove(dbname)
         }
 
+        //help button
+//        val help = findViewById<ImageView>(R.id.databaseHelpButton)
+//        help.setOnClickListener {
+//            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+//        }
+
     }
 
     // getDatabaseList: Retrieve Database list within a Cluster

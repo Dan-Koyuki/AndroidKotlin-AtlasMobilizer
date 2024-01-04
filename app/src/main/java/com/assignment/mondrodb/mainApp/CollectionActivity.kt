@@ -111,6 +111,12 @@ class CollectionActivity : DashboardSettings(), APIAdapter.MyClickListener {
             remove(collectionsname)
         }
 
+        //help button
+//        val help = findViewById<ImageView>(R.id.ivHelpCollection)
+//        help.setOnClickListener {
+//            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+//        }
+
     }
 
     // getCollectionList: Retrieve Collection List of a Database

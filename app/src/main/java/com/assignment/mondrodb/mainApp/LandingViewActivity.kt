@@ -110,7 +110,7 @@ class LandingViewActivity : AppCompatActivity() {
 
         val privacy = findViewById<Button>(R.id.PrivacyPolicy)
         privacy.setOnClickListener {
-            openWebPage("https://www.termsfeed.com/live/0fa27eff-b5db-4a52-954c-492602e6209e")
+            openWebPage("https://dan-koyuki.github.io/Mobile-Native_Atlas-Mobilizer/")
         }
     }
 

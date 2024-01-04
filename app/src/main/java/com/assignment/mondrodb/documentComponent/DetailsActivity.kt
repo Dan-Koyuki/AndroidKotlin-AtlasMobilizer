@@ -140,7 +140,7 @@ class DetailsActivity : AppCompatActivity() {
                 }
 
                 // Handle success response
-                if (response.contains("Database Removed!")) {
+                if (response.contains("Document Removed!")) {
                     Toast.makeText(this@DetailsActivity, "Removed!!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@DetailsActivity, "Unexpected Response,Try Again Later!", Toast.LENGTH_SHORT).show()
@@ -170,10 +170,10 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         //Update Button
-        val updateBtn = findViewById<Button>(R.id.btnUpdate)
-        updateBtn.setOnClickListener {
-            Toast.makeText(this@DetailsActivity, "Coming Soon!", Toast.LENGTH_SHORT).show()
-        }
+//        val updateBtn = findViewById<Button>(R.id.btnUpdate)
+//        updateBtn.setOnClickListener {
+//            Toast.makeText(this@DetailsActivity, "Coming Soon!", Toast.LENGTH_SHORT).show()
+//        }
     }
 
 }
