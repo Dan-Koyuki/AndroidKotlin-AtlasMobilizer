@@ -30,3 +30,9 @@ For any queries or suggestions, feel free to contact me at [dankoyuki398@gmail.c
 - [Demo](https://youtu.be/sOKf-cRIuuo?feature=shared)
 - [Repository](https://github.com/Dan-Koyuki/Mobile-Native_Atlas-Mobilizer.git)
 - [App](coming soon)
+
+  ### Members
+  - Irwanto Danang Bahtiar (1217050070)
+  - M. Iqbal Fauzi (1217050085)
+  - M. Ikhsan Nurhalim (1217050097)
+  - M. Randi Septiansah (1217050086)
