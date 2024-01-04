@@ -24,3 +24,8 @@ Atlas Mobilizer may collect user information, such as email addresses for certai
 
 ## Contact
 For any queries or suggestions, feel free to contact me at [dankoyuki398@gmail.com](dankoyuki398@gmail.com).
+
+## Assignment
+- [Pitch Deck](https://atlas-pitch-deck.vercel.app/)
+- [Demo](https://youtu.be/sOKf-cRIuuo?feature=shared)
+- [App](coming soon)
